@@ -2,12 +2,10 @@
 const express = require('express');
 const app = express();
 require('dotenv').config()
-// dotenv.config ({ path:".env"});
 const session = require('express-session')
 const passport = require("passport")
 
 const path = require('path');
-
 const viewPath = path.join(__dirname + '/src/views')
 
 app.set("view engine", "ejs")
