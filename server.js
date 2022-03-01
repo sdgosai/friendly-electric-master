@@ -1,0 +1,35 @@
+// Package require & Use
+const express = require('express');
+const app = express();
+require('dotenv').config()
+// dotenv.config ({ path:".env"});
+const session = require('express-session')
+const passport = require("passport")
+
+const path = require('path');
+
+const viewPath = path.join(__dirname + '/src/views')
+
+app.set("view engine", "ejs")
+app.set('views', viewPath)
+app.use(session({ secret: 'fblogintestapi' }));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use(passport.initialize());
+// Database conn require
+require("./src/database_config/conn")
+
+// Router require ...
+const userRouter = require('./src/router/userRouter');
+app.use(userRouter);
+
+// Port open
+const port = process.env.port;
+app.listen(port, () => {
+    console.log(`node application live at ${port} ✅`);
+})
