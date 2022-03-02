@@ -22,7 +22,7 @@ app.use(passport.initialize());
 // Database conn require
 require("./src/database_config/conn")
 
-// Router require ...
+// Router require ...   dishang
 const userRouter = require('./src/router/userRouter');
 app.use(userRouter);
 
