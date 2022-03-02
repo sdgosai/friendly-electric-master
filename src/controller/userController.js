@@ -3,12 +3,13 @@ const { fast2sms } = require('../middleware/smsAuth');
 const passport = require("passport");
 const User = require('../model/fbModel')
 const Razorpay = require("razorpay");
+require('dotenv').config()
 
 require('../middleware/fbAuth')(passport)
 const { TokenSender } = require('../utils/tokenSender')
 
-var instance = new Razorpay({  key_id: 'YOUR_KEY_ID',  key_secret: 'YOUR_KEY_SECRET',});
-
+var instance = new Razorpay({  key_id: process.env.key_id,  key_secret: process.env.key_secret,});
+console.log(key_id);
 exports.addUser = async (req, res) => {
     const { name, email, number } = req.body;
     if (!number) {
