@@ -2,13 +2,13 @@ const { user } = require("../model/userModel");
 const { fast2sms } = require('../middleware/smsAuth');
 const passport = require("passport");
 const User = require('../model/fbModel')
-const Razorpay = require("razorpay");
+const rzp = require("razorpay");
 require('dotenv').config()
 
 require('../middleware/fbAuth')(passport)
 const { TokenSender } = require('../utils/tokenSender')
 
-var instance = new Razorpay({  key_id: process.env.key_id,  key_secret: process.env.key_secret,});
+var instance = new rzp({  key_id: process.env.key_id,  key_secret: process.env.key_secret,});
 
 exports.addUser = async (req, res) => {
     const { name, email, number } = req.body;
@@ -244,21 +244,35 @@ exports.profile = async (req, res, next) => {
 }
 
 exports.razorpayWallet = async (req, res) => {
-    const options = {
-        amount: req.body.amount,
+    const rzpOrder = await rzp.orders.create({
+        amount: amount * 100, // rzp format with paise
         currency: 'INR',
-        receipt: shortid.generate(), //any unique id
-        // payment_capture = 1 //optional
-    }
-    try {
-        const response = await razorpay.orders.create(options)
-        res.json({
-            order_id: response.id,
-            currency: response.currency,
-            amount: response.amount
-        })
-    } catch (error) {
-        console.log(error);
-        res.status(400).send('Unable to create order');
-    }
+        receipt: "receipt#1", //Receipt no that corresponds to this Order,
+        // payment_capture: true,
+        notes: {
+         orderType: "Pre"
+        } 
+       //Key-value pair used to store additional information
+       });
+       // To create recurring subscription
+       const subscriptionObject = {
+        // plan_id: PLAN_ID,
+        total_count: 60,
+        quantity: 1,
+        customer_notify: 1,
+        notes,
+       }
+       const subscription = await rzp.subscriptions.create(subscriptionObject);
+
+    //    if(err) {
+    //        res.send({
+    //            success:1,
+    //            message:"payment faild"
+    //        })
+    //    } else {
+    //        res.send({
+    //            success:0,
+    //            data:subscription
+    //        })
+    //    }
 }

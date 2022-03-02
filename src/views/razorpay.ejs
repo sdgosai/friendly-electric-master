@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Razorpay</title>
+</head>
+<body>
+    <button href="/order" id="rzp-button1">Pay</button>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script> <script> 
+ var options = 
+  {
+   "key": "rzp_test_jzyl75PUZoFuGd", // Enter the Key ID generated from the Dashboard 
+   "name": "Test Company", 
+   "order_id": "rzpOrder.id", // For one time payment
+   "subscription_id" : "subscription.id", // For recurring subscription
+   "prefill": {
+     "name": "sachin",
+     "email": "sachingosai.flexion@gmail.com",
+     "contact": "9737999898"
+   },
+   "theme": {
+    "color": "#3399cc"
+   },
+   // This handler function will handle the success payment
+   "handler": function (response) {
+    alert(response.razorpay_payment_id);
+    alert("Payment Successfull")
+   },
+};
+const rzp1 = new Razorpay(options);
+document.getElementById('rzp-button1').onclick = function (e) {
+  rzp1.open();
+  e.preventDefault();
+}
+rzp1.on('payment.failed', function (response)
+ {
+  alert(response.error.code);
+  alert(response.error.description);
+  alert(response.error.source);
+  alert(response.error.step);
+  alert(response.error.reason);
+  alert(response.error.metadata.order_id);
+  alert(response.error.metadata.payment_id);
+ });
+</script>
+</body>
+</html>
