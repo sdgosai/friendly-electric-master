@@ -244,35 +244,50 @@ exports.profile = async (req, res, next) => {
 }
 
 exports.razorpayWallet = async (req, res) => {
-    const rzpOrder = await rzp.orders.create({
-        amount: amount * 100, // rzp format with paise
-        currency: 'INR',
-        receipt: "receipt01", //Receipt no that corresponds to this Order,
-        payment_capture: true,
-        notes: {
-            orderType: "Pre"
-        }
-        //Key-value pair used to store additional information
-    });
-    // To create recurring subscription
-    const subscriptionObject = {
-        plan_id: plan_id,
-        total_count: 60,
-        quantity: 1,
-        customer_notify: 1,
-        notes,
-    }
-    const subscription = await rzp.subscriptions.create(subscriptionObject);
+    try {
+        const { amount } = req.body
+        instance.orders.create({
+            amount: amount || 100, // rzp format with paise
+            currency: 'INR',
+            receipt: "receipt01", //Receipt no that corresponds to this Order,
+            payment_capture: true,
+            notes: {
+                orderType: "Pre"
+            }
+            //Key-value pair used to store additional information
+        }).then(orderCreate => {
+            if (orderCreate) {
+                res.send({
+                    success: true,
+                    message: 'Payment order',
+                    data: orderCreate
+                })
+            } else {
+                res.send({
+                    success: false,
+                    message: 'payment order failed'
+                })
+            }
+        }).catch(err => {
+            console.log(err);
+            res.send({
+                success: false,
+                message: 'Failed',
+                err: err
+            })
+        })
+        // To create recurring subscription
+        // const subscriptionObject = {
+        //     plan_id: plan_id,
+        //     total_count: 60,
+        //     quantity: 1,
+        //     customer_notify: 1,
+        //     notes,
+        // }
+        // const subscription = await instance.subscriptions.create(subscriptionObject);
 
-    //    if(err) {
-    //        res.send({
-    //            success:1,
-    //            message:"payment faild"
-    //        })
-    //    } else {
-    //        res.send({
-    //            success:0,
-    //            data:subscription
-    //        })
-    //    }
+
+    } catch (error) {
+        res.send(error)
+    }
 }
