@@ -9,7 +9,7 @@ require('../middleware/fbAuth')(passport)
 const { TokenSender } = require('../utils/tokenSender')
 
 var instance = new Razorpay({  key_id: process.env.key_id,  key_secret: process.env.key_secret,});
-console.log(key_id);
+
 exports.addUser = async (req, res) => {
     const { name, email, number } = req.body;
     if (!number) {
@@ -244,5 +244,21 @@ exports.profile = async (req, res, next) => {
 }
 
 exports.razorpayWallet = async (req, res) => {
-
+    const options = {
+        amount: req.body.amount,
+        currency: 'INR',
+        receipt: shortid.generate(), //any unique id
+        // payment_capture = 1 //optional
+    }
+    try {
+        const response = await razorpay.orders.create(options)
+        res.json({
+            order_id: response.id,
+            currency: response.currency,
+            amount: response.amount
+        })
+    } catch (error) {
+        console.log(error);
+        res.status(400).send('Unable to create order');
+    }
 }
