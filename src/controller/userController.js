@@ -2,9 +2,12 @@ const { user } = require("../model/userModel");
 const { fast2sms } = require('../middleware/smsAuth');
 const passport = require("passport");
 const User = require('../model/fbModel')
+const Razorpay = require("razorpay");
 
 require('../middleware/fbAuth')(passport)
 const { TokenSender } = require('../utils/tokenSender')
+
+var instance = new Razorpay({  key_id: 'YOUR_KEY_ID',  key_secret: 'YOUR_KEY_SECRET',});
 
 exports.addUser = async (req, res) => {
     const { name, email, number } = req.body;
@@ -240,5 +243,5 @@ exports.profile = async (req, res, next) => {
 }
 
 exports.razorpayWallet = async (req, res) => {
-    
+
 }
