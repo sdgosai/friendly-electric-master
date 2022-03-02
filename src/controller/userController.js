@@ -238,3 +238,7 @@ exports.profile = async (req, res, next) => {
         })
     })
 }
+
+exports.razorpayWallet = async (req, res) => {
+    
+}
