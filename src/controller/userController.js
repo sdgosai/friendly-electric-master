@@ -282,7 +282,7 @@ exports.razorpayWallet = async (req, res) => {
     // }
 
     var options = {
-        amount: 500,  // amount in the smallest currency unit  
+        amount: 500,  // amount in the smallest currency unit
         currency: "INR",
         receipt: "order_rcptid_11"
     };
