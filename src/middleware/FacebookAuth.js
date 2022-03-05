@@ -1,4 +1,4 @@
-const User = require('../model/fbModel')
+const User = require('../Models/FacebookModel')
 const facebookStrategy = require('passport-facebook').Strategy
 
 module.exports = (passport) => {

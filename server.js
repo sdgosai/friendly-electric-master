@@ -20,10 +20,10 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(passport.initialize());
 // Database conn require
-require("./src/database_config/conn")
+require("./src/Configs/DatabaseConfig")
 
 // Router require ...   sachin
-const userRouter = require('./src/router/userRouter');
+const userRouter = require('./src/Routes/UserRoute');
 app.use(userRouter);
 
 // Port open

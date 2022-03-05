@@ -1,12 +1,12 @@
-const { user } = require("../model/userModel");
-const { fast2sms } = require('../middleware/smsAuth');
+const { user } = require("../Models/UserModel");
+const { fast2sms } = require('../Middleware/SmsAuth');
 const passport = require("passport");
-const User = require('../model/fbModel')
+const User = require('../Models/FacebookModel')
 const rzp = require("razorpay");
 require('dotenv').config()
 
-require('../middleware/fbAuth')(passport)
-const { TokenSender } = require('../utils/tokenSender')
+require('../Middleware/FacebookAuth')(passport)
+const { TokenSender } = require('../Utils/TokenSender')
 
 var instance = new rzp({ key_id: process.env.key_id, key_secret: process.env.key_secret, });
 
