@@ -244,42 +244,68 @@ exports.profile = async (req, res, next) => {
 }
 
 exports.razorpayWallet = async (req, res) => {
-    try {
-        const { amount } = req.body
-        instance.orders.create({
-            amount: amount || 100, // rzp format with paise
-            currency: 'INR',
-            receipt: "receipt01", //Receipt no that corresponds to this Order,
-            payment_capture: true,
-            notes: {
-                orderType: "Pre"
-            }
-            //Key-value pair used to store additional information
-        }).then(orderCreate => {
-            if (orderCreate) {
-                res.send({
-                    success: true,
-                    message: 'Payment order',
-                    data: orderCreate
-                })
-            } else {
-                res.send({
-                    success: false,
-                    message: 'payment order failed'
-                })
-            }
-        }).catch(err => {
-            console.log(err);
+    // try {
+    //     const { amount } = req.body
+    //     instance.orders.create({
+    //         amount: amount || 100, // rzp format with paise
+    //         currency: 'INR',
+    //         receipt: "receipt01", //Receipt no that corresponds to this Order,
+    //         payment_capture: true,
+    //         notes: {
+    //             orderType: "Pre"
+    //         }
+    //         //Key-value pair used to store additional information
+    //     }).then(orderCreate => {
+    //         if (orderCreate) {
+    //             res.send({
+    //                 success: true,
+    //                 message: 'Payment order',
+    //                 data: orderCreate
+    //             })
+    //         } else {
+    //             res.send({
+    //                 success: false,
+    //                 message: 'payment order failed'
+    //             })
+    //         }
+    //     }).catch(err => {
+    //         console.log(err);
+    //         res.send({
+    //             success: false,
+    //             message: 'Failed',
+    //             err: err
+    //         })
+    //     })
+
+    // } catch (error) {
+    //     res.send(error)
+    // }
+
+    var options = {
+        amount: 500,  // amount in the smallest currency unit  
+        currency: "INR",
+        receipt: "order_rcptid_11"
+    };
+
+    instance.orders.create(options, function (err, order) {
+        console.log(order);
+    });
+
+    instance.payments.all()
+        .then((response) => {
             res.send({
-                success: false,
-                message: 'Failed',
-                err: err
+                success: 0,
+                data: response
+            })
+        })
+        .catch((error) => {
+            console.log(error);
+            res.send({
+                success: 1,
+                message: "occurd error"
             })
         })
 
-    } catch (error) {
-        res.send(error)
-    }
 }
 
 // exports.subscriptionId = async (req,res) => {
