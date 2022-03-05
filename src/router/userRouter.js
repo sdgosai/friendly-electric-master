@@ -16,9 +16,10 @@ router.get('/', (req, res) => {
     res.render("index")
 }) // optional fronted ...
 
-router.get("/order", userController.razorpayWallet);
+router.post("/order", userController.razorpayWallet);
 router.get('/razorpay', (req, res) => {
     res.render("razorpay")
 })
+// router.post("/subscription", userController.subscriptionId);
 
 module.exports = router;

@@ -44,14 +44,14 @@ exports.addUser = async (req, res) => {
                 } else {
                     res.send({
                         success: false,
-                        message: " enble to rgister"
+                        message: " enable to register"
                     })
                 }
             }).catch(err => {
                 console.log(err);
                 res.send({
                     success: false,
-                    message: 'FAiled',
+                    message: 'Failed',
                     err: err
                 })
             })
@@ -61,7 +61,7 @@ exports.addUser = async (req, res) => {
             console.log(err);
             res.send({
                 success: false,
-                message: 'FAiled',
+                message: 'Failed',
                 err: err
             })
         })
@@ -276,18 +276,33 @@ exports.razorpayWallet = async (req, res) => {
                 err: err
             })
         })
-        // To create recurring subscription
-        // const subscriptionObject = {
-        //     plan_id: plan_id,
-        //     total_count: 60,
-        //     quantity: 1,
-        //     customer_notify: 1,
-        //     notes,
-        // }
-        // const subscription = await instance.subscriptions.create(subscriptionObject);
-
 
     } catch (error) {
         res.send(error)
     }
 }
+
+// exports.subscriptionId = async (req,res) => {
+//         // To create recurring subscription
+//         const subscriptionObject = {
+//             plan_id: PLAN_ID,
+//             total_count: 60,
+//             quantity: 1,
+//             customer_notify: 1,
+//             notes,
+//         }
+//         const subscription = await instance.subscriptions.create(subscriptionObject);
+
+//         if (subscription) {
+//             res.send({
+//                 success:0,
+//                 data:subscription
+//             })
+//         } else {
+//             console.log(err);
+//             res.send({
+//                 success:1,
+//                 message:"Faild"
+//             })
+//         }
+// }
